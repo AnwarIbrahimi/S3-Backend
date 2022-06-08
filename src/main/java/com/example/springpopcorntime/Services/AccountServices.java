@@ -7,14 +7,19 @@ import com.example.springpopcorntime.Repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
-public class AccountServices implements AccountService {
+public class AccountServices {
 
     @Autowired
     private AccountRepository accountRepository;
 
-    @Override
+    public AccountServices(AccountRepository accountRepository) {
+        this.accountRepository = accountRepository;
+    }
+
     public AccountViewModel login(String emailId)
     {
         Account account = accountRepository.findByemailId(emailId);
@@ -26,5 +31,9 @@ public class AccountServices implements AccountService {
         accountViewModel = AccountConverter.convertAccountToViewModel(account);
         accountViewModel.setLogged(true);
         return accountViewModel;
+    }
+
+    public List<Account> getAllAccounts() {
+        return accountRepository.findAll();
     }
 }
